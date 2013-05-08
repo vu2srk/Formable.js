@@ -1,14 +1,17 @@
-Formable = (function(window){
+(function(window){
 	
 	function Formable(){
 		this.forms = {};
 		this.formCount = 0;
+		this.window = window;
 	}
 	
 	Formable.prototype = {
-		creatForm : function(name, title, hook){
+		createForm : function(name, title, hook){
 			this.formCount++;
-			this.forms[name] = new Form(name, title, hook, formCount);
+			this.forms[name] = new Form(name, title, hook, this.formCount);
+			var html = this.forms[name].getHtml();
+			this.window.document.getElementById(hook).innerHTML = html;
 		}
 	};
 	
@@ -21,8 +24,13 @@ Formable = (function(window){
 	}
 	
 	Form.prototype = {
-		
+		getHtml : function(){
+			var html = "<form class='" + this.class +"' >";
+			html += "</form>";
+			return html;
+		}
 	};
 	
-	return Formable;
-});
+	window.Formable = Formable;
+	
+})(window);
